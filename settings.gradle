@@ -1,0 +1,2 @@
+include ':app', ':dsbridge'
+rootProject.name='qskd_tip_demo'
