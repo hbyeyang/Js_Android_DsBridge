@@ -19,7 +19,8 @@ public class MainActivity extends Activity {
     private TextView mTvFromEditJump;
 
     private String testUrl = "http://gamecentercdn.hddgood.com/static/test/test.html";
-    private String mUrl = "http://t.alpha.channel.45xie.com/beautypic/home.html?appid=B428109E4AA4E883DB8B1877BFF3575F";
+//    private String mUrl = "http://t.alpha.channel.45xie.com/beautypic/home.html?appid=B428109E4AA4E883DB8B1877BFF3575F";
+    private String mUrl = "http://t.alpha.channel.45xie.com/gamecat/index.html?appid=00830CC9B50A72B3822B06D8D6ACEAE4";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

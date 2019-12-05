@@ -1,9 +1,13 @@
 package com.xszn.ime.activity;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bytedance.sdk.openadsdk.TTAdManager;
@@ -78,6 +82,29 @@ public class FirstActivity extends Activity {
     }
 
     private void initView() {
+        findViewById(R.id.tv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        findViewById(R.id.tv_copy).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(FirstActivity.this,"复制成功",Toast.LENGTH_SHORT).show();
+                copy(FirstActivity.this,mDataUrl);
+            }
+        });
+
+        findViewById(R.id.tv_refresh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mWebView.loadUrl(mDataUrl);
+            }
+        });
+
+
         mDataUrl = getIntent().getStringExtra(DATA_URL);
 
         per();
@@ -97,6 +124,27 @@ public class FirstActivity extends Activity {
         });
         mWebView.addJavascriptObject(mJsApi, null);
         mWebView.loadUrl(mDataUrl);
+        ((TextView)findViewById(R.id.tv_title)).setText(mWebView.getTitle());
+    }
+
+    /**
+     * 复制内容到剪切板
+     *
+     * @param copyStr
+     * @return
+     */
+    private boolean copy(Context context, String copyStr) {
+        try {
+            //获取剪贴板管理器
+            ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            // 创建普通字符型ClipData
+            ClipData mClipData = ClipData.newPlainText("Label", copyStr);
+            // 将ClipData内容放到系统剪贴板里。
+            cm.setPrimaryClip(mClipData);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 
@@ -114,7 +162,7 @@ public class FirstActivity extends Activity {
             if (flag) {
                 jsonObject.put("display", flag);
             } else {
-                jsonObject.put("noad", flag);
+                jsonObject.put("noad", true);
             }
             LogUtils.d(TAG + jsonObject.toString());
             mWebView.callHandler("adresult", new Object[]{jsonObject}, new OnReturnValue<String>() {
@@ -161,7 +209,7 @@ public class FirstActivity extends Activity {
                 //.constantRequest()
                 // 支持请求6.0悬浮窗权限8.0请求安装权限
                 //.permission(Permission.SYSTEM_ALERT_WINDOW, Permission.REQUEST_INSTALL_PACKAGES)
-                // 不指定权限则自动获取清单中的危险权限
+                // 不指定权限则自动获取清单中的危险权限TTAdSdk.init
                 .permission(Permission.Group.STORAGE, Permission.Group.LOCATION)
                 .request(new OnPermission() {
 

@@ -78,10 +78,10 @@ public class VideoPlayActivity extends Activity {
         mAd_id = getIntent().getStringExtra(AD_ID);
         mAd_Type = getIntent().getStringExtra(AD_TYPE);
         mTTAdNative = mActivity.getTTAdNative();
-        if (mAd_Type == C_FULLVIDEO) {//全屏
+        if (mAd_Type .equals(C_FULLVIDEO)) {//全屏
             LogUtils.d(TAG + "全屏");
             loadFullScreenVideoAd(this, mAd_id, TTAdConstant.VERTICAL, mActivity.getVideoPlayCall());
-        } else if (mAd_Type == C_INSPIRE) {//激励
+        } else if (mAd_Type.equals(C_INSPIRE)) {//激励
             LogUtils.d(TAG + "激励");
             loadCSJAd(this, mAd_id, TTAdConstant.VERTICAL, mActivity.getVideoPlayCall());
         }
@@ -270,7 +270,7 @@ public class VideoPlayActivity extends Activity {
                     @Override
                     public void onVideoComplete() {
                         LogUtils.d(TAG + "onVideoComplete");
-                        videoPlayCall.playErr(mAd_Name, true);
+//                        videoPlayCall.playErr(mAd_Name, true);
                     }
 
                     @Override
@@ -296,6 +296,12 @@ public class VideoPlayActivity extends Activity {
      */
     private void closeActivity(VideoPlayCall videoPlayCall, boolean flag) {
         videoPlayCall.playErr(mAd_Name, flag);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        closeActivity(mActivity.getVideoPlayCall(), false);
         finish();
     }
 
